@@ -1,4 +1,4 @@
-# <img src="./assets/overwatch.ico" alt="Overwatch" width="32"> Skinwatch
+# <img src="./assets/overwatch.ico" alt="Overwatch" height="24"> Skinwatch
 
 > 🔎 Find Overwatch skins available for purchase, directly from Discord.
 
