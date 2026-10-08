@@ -35,6 +35,9 @@ cp .env.example .env
 python bot.py
 ```
 
+### 4. Adding Bot
+- https://discord.com/oauth2/authorize?client_id=1557800901308194966&permissions=18432&integration_type=0&scope=bot+applications.commands
+
 ## 🤖 Commands
 
 ### `/skins`
