@@ -5,6 +5,7 @@ import unicodedata
 
 import discord
 import httpx
+from aiohttp import web
 from discord import app_commands
 from dotenv import load_dotenv
 
@@ -126,12 +127,32 @@ def build_embed(item: dict) -> discord.Embed:
     return embed
 
 
+async def start_health_server() -> None:
+    """Tiny HTTP server so hosts that require an open port (e.g. Render Web Service)
+    and uptime monitors have something to ping. Only runs when PORT is set."""
+    port = os.getenv("PORT")
+    if not port:
+        return
+
+    async def health(_request: web.Request) -> web.Response:
+        return web.Response(text="ok")
+
+    app = web.Application()
+    app.router.add_get("/", health)
+    app.router.add_get("/health", health)
+    runner = web.AppRunner(app)
+    await runner.setup()
+    await web.TCPSite(runner, "0.0.0.0", int(port)).start()
+    log.info("Health server listening on port %s", port)
+
+
 class SkinsBot(discord.Client):
     def __init__(self):
         super().__init__(intents=discord.Intents.default())
         self.tree = app_commands.CommandTree(self)
 
     async def setup_hook(self):
+        await start_health_server()
         await self.tree.sync()
 
 
